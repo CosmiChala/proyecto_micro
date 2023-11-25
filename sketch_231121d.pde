@@ -1,10 +1,9 @@
-//f volar, c comer, n noche
 PImage Bayafram, bayas, cha_practice, cha_prin, char_evolve, 
 char_muerte, char_volando, char_vvida, fondoBosque, fondoNoche, fondoVuelo, fondoRoca, squirtle, bayaEspecial, pelea, charDuerme;
 int x = 200;
 int y = 500;
 byte i=0;
-byte m = 0;
+byte j = 0;
 byte etapa = 0;
 boolean mostrartexto = true;
 byte energia = 0;
@@ -66,7 +65,7 @@ void draw() {
 }
  barrae(1300);
  println(energia);
- 
+
 if(m==3){
   background(fondoNoche);
   image(cha_practice, mouseX-100, mouseY-100, 220, 200);
@@ -93,6 +92,7 @@ image(cha_prin, mouseX-100, mouseY-100, 220, 200);
   }
   if(i>= 8){
     etapa++;
+
     m=0;
     mostrartexto = true;
   }
@@ -125,21 +125,32 @@ void mejorar(){
   background(fondoRoca);
   image(squirtle, possx, possy, 170, 180);
   image(cha_practice, mouseX-100, mouseY-100, 220, 200);
+
+   if(bayae ==2){
+    bayaespecial(200, 500);
+    }else if(bayae == 3){
+    bayaespecial(700, 500);
+  }
   textop("Necesito entrenar con squirtle\n para mejorar", 200, 100, 180, 80);
   if(dist(mouseX-100, mouseY-100, possx, possy) < 90 && key=='p'){ 
       squirtleTiempoInicio = millis();//guardar el tiempo desde que se presiono p
       possx = int(random(0, 1400)); 
       possy = int(random(0, 500));
       i++;
+      j++;
   }
   // checar si squirtle aparecio por la duracion especificada
   if (millis() - squirtleTiempoInicio < squirtleDuracion) {
     image(pelea, 0, 0, 1600, 900);
   }
   key = '0';
+
   if(i>= 4){
   etapa++;
   i = 0;
+  if(j>= 4){
+  etapa++;
+  j = 0;
   }
 }
 
@@ -147,6 +158,18 @@ void descanso(){
   if(mostrartexto){
     textop("¡Hemos derrotado a Squirtle! \n Necesito descansar para poder volar", 200, 80, 250, 60);
   }
+  
+   if (bayae == 4){
+    bayaespecial(800, 200);
+    if(mostrartexto){
+    textop("Recoge la última baya especial", 200, 80, 250, 60);
+    }
+   }else if(bayae == 5){
+     etapa++;
+  }else{
+    textop("Necesito descansar para poder volar.", 200, 80, 250, 60);
+  }
+  
   
 }
 
