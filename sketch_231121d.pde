@@ -64,12 +64,7 @@ void draw() {
  break;
 }
  barrae(1300);
- println(energia);
-
-if(m==3){
-  background(fondoNoche);
-  image(cha_practice, mouseX-100, mouseY-100, 220, 200);
- }
+ //println(energia);
 }
 
 void bayas() {
@@ -92,8 +87,6 @@ image(cha_prin, mouseX-100, mouseY-100, 220, 200);
   }
   if(i>= 8){
     etapa++;
-
-    m=0;
     mostrartexto = true;
   }
 }
