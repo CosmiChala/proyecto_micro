@@ -98,6 +98,7 @@ image(cha_prin, mouseX-100, mouseY-100, 220, 200);
   }
 }
 
+
 void keyPressed(){
    if(key == 'e'){
     etapa++;
@@ -152,6 +153,7 @@ void mejorar(){
   etapa++;
   j = 0;
   }
+}
 }
 
 void descanso(){
