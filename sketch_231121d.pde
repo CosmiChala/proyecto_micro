@@ -16,8 +16,9 @@ int g =0;
 int bayae = 0;
 int duracionVuelo = 8000;
 int tiempo;
-int squirtleTiempoInicio;
+int squirtleTiempoInicio, descansoTiempoInicio;
 int squirtleDuracion = 2000;
+int descansoDuracion = 10000;
 
 void setup(){
   Bayafram = loadImage("BayaFram.png");
@@ -64,7 +65,7 @@ void draw() {
  break;
 }
  barrae(1300);
- //println(energia);
+ println(energia);
 }
 
 void bayas() {
@@ -90,7 +91,6 @@ image(cha_prin, mouseX-100, mouseY-100, 220, 200);
     mostrartexto = true;
   }
 }
-
 
 void keyPressed(){
    if(key == 'e'){
@@ -119,7 +119,6 @@ void mejorar(){
   background(fondoRoca);
   image(squirtle, possx, possy, 170, 180);
   image(cha_practice, mouseX-100, mouseY-100, 220, 200);
-
    if(bayae ==2){
     bayaespecial(200, 500);
     }else if(bayae == 3){
@@ -130,7 +129,6 @@ void mejorar(){
       squirtleTiempoInicio = millis();//guardar el tiempo desde que se presiono p
       possx = int(random(0, 1400)); 
       possy = int(random(0, 500));
-      i++;
       j++;
   }
   // checar si squirtle aparecio por la duracion especificada
@@ -138,22 +136,13 @@ void mejorar(){
     image(pelea, 0, 0, 1600, 900);
   }
   key = '0';
-
-  if(i>= 4){
-  etapa++;
-  i = 0;
   if(j>= 4){
   etapa++;
   j = 0;
   }
 }
-}
 
 void descanso(){
-  if(mostrartexto){
-    textop("¡Hemos derrotado a Squirtle! \n Necesito descansar para poder volar", 200, 80, 250, 60);
-  }
-  
    if (bayae == 4){
     bayaespecial(800, 200);
     if(mostrartexto){
@@ -163,6 +152,16 @@ void descanso(){
      etapa++;
   }else{
     textop("Necesito descansar para poder volar.", 200, 80, 250, 60);
+    if(key == 'n'){
+      descansoTiempoInicio = millis();
+      background(fondoNoche);
+      image(charDuerme, 800, 650, 300, 200);
+      if(millis() - descansoTiempoInicio < descansoDuracion){
+        background(fondoNoche);
+        image(charDuerme, 800, 650, 300, 200);
+      }
+      // etapa++;
+    }
   }
   
   
