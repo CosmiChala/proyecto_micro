@@ -14,12 +14,8 @@ int possx = 1000;
 int possy = 500;
 int g =0;
 int bayae = 0;
-int duracionVuelo = 10000;
-int tiempo = 8000;
-int squirtleTiempoInicio, descansoTiempoInicio;
+int squirtleTiempoInicio;
 int squirtleDuracion = 2000;
-int descansoDuracion =8000;
-int tiempop;
 int v = 0;
 int d = 0;
 
@@ -47,7 +43,6 @@ void setup(){
 }
 
 void draw() {
-  tiempop = millis();
   switch(etapa){
   case 0: 
   background(fondoBosque);
@@ -68,7 +63,6 @@ void draw() {
  break;
 
  case 3:
- tiempo = millis();
  volar();
  break;
  
