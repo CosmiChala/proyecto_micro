@@ -40,7 +40,7 @@ void boton()
 {
   int id = 5;
   String nom = "Valor boton: ";
-  mandar(id, nom);
+  mandar(id);
   if (dispositivos[id].valor)
   {
     //delay (500); 
