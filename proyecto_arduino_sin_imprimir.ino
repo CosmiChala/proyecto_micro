@@ -39,8 +39,9 @@ struct sensor creaSensor(byte* pin)
 void boton()
 {
   int id = 5;
+  int suma = 0;
   String nom = "Valor boton: ";
-  mandar(id);
+  mandar(id, suma);
   if (dispositivos[id].valor)
   {
     //delay (500); 
@@ -56,9 +57,10 @@ void boton()
 
 void fotoresistencia ()
 {
-  int umbral = 800;
+  int umbral = 100;
   int id = 12;
-  mandar(id);
+  int suma = 2;
+  mandar(id, suma);
   if(dispositivos[id].valor < umbral)
   {
     //delay (500);
@@ -75,7 +77,8 @@ void fotoresistencia ()
 void sonido()
 {
   int id = 6;
-  mandar(id);
+  int suma = 1026;
+  mandar(id, suma);
   if (dispositivos[id].valor)
   {
     //delay (500);
@@ -92,7 +95,8 @@ void sonido()
 void inclinacion()
 {
   int id = 7;
-  mandar(id);
+  int suma = 1028;
+  mandar(id, suma);
   if(dispositivos[id].valor)
   {
     delay(50);
@@ -118,16 +122,18 @@ void joystick()
   {
     if(i == 8)
     {
-      mandar(i);
+      int suma = 1030;
+      mandar(i, suma);
       delay(100);
     }
     else if(i == 9)
     {
-      mandar(i);
+      int suma = 2054;
+      mandar(i, suma);
     }
     else
     {
-      mandar(i);
+      //mandar(i);
     }
   }
 }
@@ -136,7 +142,8 @@ void potenciometro()
 {
   int id = 11;
   byte etapaAnterior = 0;
-  mandar(id);
+  int suma = 3078;
+  mandar(id, suma);
   for(int i = 1; i < 5; i++)
   {
     if(dispositivos[id].valor != etapaAnterior){digitalWrite(dispositivos[i].pines, LOW);}
@@ -146,19 +153,19 @@ void potenciometro()
   //delay(500);
 }
 
-void mandar(int i)
+void mandar(int i, int suma)
 {
   if(dispositivos[i].tipo)
   {
-    Serial.write((dispositivos[i].valor = digitalRead(dispositivos[i].pines)));
+    Serial.println((dispositivos[i].valor = digitalRead(dispositivos[i].pines)) + suma);
   }
   else
   {
-    if(i != 11){Serial.write(dispositivos[i].valor = analogRead(dispositivos[i].pines));}
+    if(i != 11){Serial.println((dispositivos[i].valor = analogRead(dispositivos[i].pines))+suma);}
     else
     {
       dispositivos[i].valor = map(analogRead(dispositivos[i].pines), 0, 1023, 1, 5);
-      Serial.write(dispositivos[i].valor);
+      Serial.println(dispositivos[i].valor + suma);
     }
   }
 }
