@@ -21,7 +21,8 @@ void loop() {
   fotoresistencia();
   sonido();
   inclinacion();
-  joystick();
+  joystickx();
+  joysticky();
   potenciometro();
 }
 
@@ -116,22 +117,17 @@ void inclinacion()
   delay(500);
 }
 
-void joystick()
+void joystickx()
 {
-  for(int i = 8; i < 10; i++)
-  {
-    if(i == 8)
-    {
-      int suma = 1030;
-      mandar(i, suma);
-      delay(100);
-    }
-    else if(i == 9)
-    {
-      int suma = 2054;
-      mandar(i, suma);
-    }
-  }
+  id = 8;
+  int suma = 1030;
+  mandar(id, suma);
+}
+void joysticky()
+{
+  id = 9;
+  int suma = 2054;
+  mandar(id, suma);
 }
 
 void potenciometro()
@@ -157,7 +153,7 @@ void mandar(int i, int suma)
   }
   else
   {
-    if(i != 11){Serial.println((dispositivos[i].valor = analogRead(dispositivos[i].pines))+suma);}
+    if(i != 11){Serial.println((dispositivos[i].valor = analogRead(dispositivos[i].pines)) + suma);}
     else
     {
       dispositivos[i].valor = map(analogRead(dispositivos[i].pines), 0, 1023, 1, 5);
