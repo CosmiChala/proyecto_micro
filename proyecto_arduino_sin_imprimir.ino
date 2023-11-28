@@ -31,7 +31,7 @@ struct sensor creaSensor(byte* pin)
   {
     byte a = dispositivos[i].pines = pin[i];
     pinMode(a, (i < 4)? OUTPUT: INPUT);
-    dispositivos[i].tipo = (i < 9)? 1 : 0; //digital : analogico
+    dispositivos[i].tipo = (i < 8)? 1 : 0; //digital : analogico
   }
 }
 
@@ -52,7 +52,7 @@ void boton()
     //delay(500);
     digitalWrite(dispositivos[0].pines, LOW);
   }
-  delay (1000);
+  delay (100);
 }
 
 void fotoresistencia ()
@@ -68,10 +68,10 @@ void fotoresistencia ()
   }
   else
   {
-    delay (500);
+    delay (100);
     digitalWrite(dispositivos[0].pines, LOW);
   }
-  delay(1000);
+  delay(100);
 }
 
 void sonido()
@@ -89,7 +89,7 @@ void sonido()
     //delay (500);
     digitalWrite(dispositivos[0].pines, LOW);
   }
-  delay(1000);
+  delay(100);
 }
 
 void inclinacion()
@@ -113,7 +113,7 @@ void inclinacion()
       digitalWrite(dispositivos[0].pines, LOW);
     }
   }
-  delay(500);
+  delay(100);
 }
 
 void joystick()
@@ -124,7 +124,7 @@ void joystick()
     {
       int suma = 1030;
       mandar(i, suma);
-      delay(100);
+      delay(20);
     }
     else if(i == 9)
     {
@@ -169,3 +169,4 @@ void mandar(int i, int suma)
     }
   }
 }
+
