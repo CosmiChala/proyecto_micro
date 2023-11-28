@@ -3,11 +3,11 @@ struct sensor
   byte pines;
   int valor;
   bool tipo;
-} dispositivos[13];
+} dispositivos[12];
  //leds (hasta [4]),boton, sonido, 
  //fotodiodo,potenciometro,joystick(visto como dos sensores)
  //boton
-byte pin_aparatos[] = {7,2,3,4,5,6,9,11,10,A1,A2,A3,A4};
+byte pin_aparatos[] = {7,2,3,4,5,6,9,11,A1,A2,A3,A4};
 
 void setup() 
 { 
@@ -21,13 +21,14 @@ void loop() {
   fotoresistencia();
   sonido();
   inclinacion();
-  joystick();
+  joystickx();
+  joysticky();
   potenciometro();
 }
 
 struct sensor creaSensor(byte* pin)
 {
-  for(int i = 0; i < 13; i++)
+  for(int i = 0; i < 12; i++)
   {
     byte a = dispositivos[i].pines = pin[i];
     pinMode(a, (i < 4)? OUTPUT: INPUT);
@@ -52,13 +53,13 @@ void boton()
     //delay(500);
     digitalWrite(dispositivos[0].pines, LOW);
   }
-  delay (100);
+  delay (1000);
 }
 
 void fotoresistencia ()
 {
   int umbral = 100;
-  int id = 12;
+  int id = 11;
   int suma = 2;
   mandar(id, suma);
   if(dispositivos[id].valor < umbral)
@@ -68,10 +69,10 @@ void fotoresistencia ()
   }
   else
   {
-    delay (100);
+    delay (500);
     digitalWrite(dispositivos[0].pines, LOW);
   }
-  delay(100);
+  delay(1000);
 }
 
 void sonido()
@@ -89,7 +90,7 @@ void sonido()
     //delay (500);
     digitalWrite(dispositivos[0].pines, LOW);
   }
-  delay(100);
+  delay(1000);
 }
 
 void inclinacion()
@@ -113,34 +114,25 @@ void inclinacion()
       digitalWrite(dispositivos[0].pines, LOW);
     }
   }
-  delay(100);
+  delay(500);
 }
 
-void joystick()
+void joystickx()
 {
-  for(int i = 8; i < 11; i++)
-  {
-    if(i == 8)
-    {
-      int suma = 1030;
-      mandar(i, suma);
-      delay(20);
-    }
-    else if(i == 9)
-    {
-      int suma = 2054;
-      mandar(i, suma);
-    }
-    else
-    {
-      //mandar(i);
-    }
-  }
+  id = 8;
+  int suma = 1030;
+  mandar(id, suma);
+}
+void joysticky()
+{
+  id = 9;
+  int suma = 2054;
+  mandar(id, suma);
 }
 
 void potenciometro()
 {
-  int id = 11;
+  int id = 10;
   byte etapaAnterior = 0;
   int suma = 3078;
   mandar(id, suma);
@@ -161,7 +153,7 @@ void mandar(int i, int suma)
   }
   else
   {
-    if(i != 11){Serial.println((dispositivos[i].valor = analogRead(dispositivos[i].pines))+suma);}
+    if(i != 11){Serial.println((dispositivos[i].valor = analogRead(dispositivos[i].pines)) + suma);}
     else
     {
       dispositivos[i].valor = map(analogRead(dispositivos[i].pines), 0, 1023, 1, 5);
@@ -169,4 +161,5 @@ void mandar(int i, int suma)
     }
   }
 }
+
 
