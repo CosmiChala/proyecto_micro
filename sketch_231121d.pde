@@ -1,15 +1,10 @@
+//Sensores
+import processing .serial.*;
+Serial port;
 PImage Bayafram, bayas, cha_practice, cha_prin, char_evolve, 
-char_muerte, char_volando, char_vvida, fondoBosque, fondoNoche, fondoVuelo, fondoRoca, squirtle, bayaEspecial, pelea, charDuerme, charMuerte, energiaI;
+char_muerte, char_volando, fondoBosque, fondoNoche, fondoVuelo, fondoRoca, squirtle, bayaEspecial, pelea, charDuerme, charMuerte, energiaI;
 int x = 200;
 int y = 500;
-byte i=0;
-byte j = 0;
-byte etapa = 0;
-boolean mostrartexto = true;
-byte energia = 0;
-int posvx = 1300;
-boolean bayaespb = true;
-byte p=0;
 int possx = 1000;
 int possy = 500;
 int g =0;
@@ -18,15 +13,24 @@ int squirtleTiempoInicio;
 int squirtleDuracion = 2000;
 int v = 0;
 int d = 0;
-
+int posvx = 1300;
+byte i=0;
+byte j = 0;
+byte etapa = 0;
+byte energia = 0;
+byte p=0;
+boolean mostrartexto = true;
+boolean bayaespb = true;
+int datoInt;
+int boton, fotoresis, sonido, inclinacion, xj, yj, potenciometro;
+int posxj = 800;
+int posyj = 400;
 void setup(){
-  Bayafram = loadImage("BayaFram.png");
   bayas = loadImage("baya_amarilla.png");
   cha_practice = loadImage("ChaPractice.png");
   cha_prin = loadImage("cha_prin.png");
   char_evolve = loadImage("CharEvolve.png");
   char_volando = loadImage("CharVolando.png");
-  char_vvida = loadImage("Charvvida.png");
   fondoBosque = loadImage("FondoBosque.jpg");
   fondoNoche = loadImage("FondoNoche.jpg");
   fondoVuelo = loadImage("Vuelo.jpg");
@@ -39,38 +43,35 @@ void setup(){
   energiaI = loadImage("energiaI.png");
   size(1600, 900);
   noCursor();
-  
+  printArray(Serial.list());
+  port = new Serial(this, Serial.list()[0], 9600);
+  port.bufferUntil('\n');
 }
 
 void draw() {
-  switch(etapa){
-  case 0: 
-  background(fondoBosque);
-  image(cha_prin, mouseX-100, mouseY-100, 220, 200);
-  bayas();
-  break;
   
- case 1: 
- background(fondoRoca);
- image(cha_practice, mouseX-100, mouseY-100, 220, 200);
- mejorar();
- break;
- 
- case 2:
- background(fondoRoca);
- image(char_evolve, mouseX-100, mouseY-100, 400, 300);
- descanso();
- break;
-
- case 3:
- volar();
- break;
- 
- case 4:
- background(255,255,255);
- image(charMuerte, 400, 450, 800, 300);
- break;
-}
+  switch(etapa){
+    case 0: 
+      bayas();
+      break;
+   case 1: 
+     background(fondoRoca);
+     image(cha_practice, mouseX-100, mouseY-100, 220, 200);
+     mejorar();
+     break;
+   case 2:
+     background(fondoRoca);
+     image(char_evolve, mouseX-100, mouseY-100, 400, 300);
+     descanso();
+     break;
+   case 3:
+     volar();
+     break;
+   case 4:
+     background(255,255,255);
+     image(charMuerte, 400, 450, 800, 300);
+     break;
+  }
  barrae(1300);
 }
 
@@ -80,13 +81,13 @@ void bayas() {
   if(bayae ==0){
     bayaespecial(200, 500);
     }else if(bayae == 1){
-    bayaespecial(700, 500);
+      bayaespecial(700, 500);
   }
   if(mostrartexto){
     textop("¡Tengo hambre!\n Recoge las bayas para\n alimentarme",130,90, 180, 80);
   }
-image(cha_prin, mouseX-100, mouseY-100, 220, 200);
-  if(dist(mouseX-100, mouseY-100, x, y) < 70){
+image(cha_prin, posxj, posyj, 220, 200);
+  if(dist(posxj-100, posyj-100, x, y) < 150 & boton == 1){
     x = int(random(0, 1200));
     y = int(random(70, 700));
     i++;
@@ -97,12 +98,6 @@ image(cha_prin, mouseX-100, mouseY-100, 220, 200);
     mostrartexto = true;
   }
 }
-
-void keyPressed(){
-   if(key == 'e'){
-    etapa++;
-   }
- }
 
 void volar(){ 
   background(fondoVuelo);
@@ -137,7 +132,7 @@ void mejorar(){
   if(mostrartexto){
   textop("Necesito entrenar con squirtle\n para mejorar", 200, 100, 180, 80);
   }
-  if(dist(mouseX-100, mouseY-100, possx, possy) < 90 && key=='p'){ 
+  if(dist(mouseX-100, mouseY-100, possx, possy) < 90 && sonido == 1){ 
       squirtleTiempoInicio = millis();//guardar el tiempo desde que se presiono p
       possx = int(random(0, 1400)); 
       possy = int(random(0, 500));
@@ -148,7 +143,6 @@ void mejorar(){
   if (millis() - squirtleTiempoInicio < squirtleDuracion) {
     image(pelea, 0, 0, 1600, 900);
   }
-  key = '0';
   if(j>= 4){
   etapa++;
   j = 0;
@@ -162,11 +156,12 @@ void descanso(){
     textop("Recoge la última baya especial", 200, 80, 250, 60);
     }
    }else if(bayae == 5){
-     etapa++;
+     etapa = byte(random(3,5));
+     print(etapa);
   }else{
     textop("Necesito descansar para poder volar.", 200, 80, 250, 60);
   }
-    if(key == 'n'){
+    if(fotoresis <500){
         background(fondoNoche);
         image(charDuerme, 800, 650, 300, 200);
         if(dist(mouseX-100, mouseY-100, 800, 450) < 1000){
@@ -196,7 +191,7 @@ void textop(String s, int ancho, int alto, int xc, int yc){
 
 void bayaespecial(int w, int z){
   image(bayaEspecial, w, z, 80, 80);
-  if(dist(mouseX-100, mouseY-100, w, z) < 100){
+  if(dist(mouseX-100, mouseY-100, w, z) < 200 & inclinacion == 1){
     energia++;
     w = 2000;
     z = 2000;
@@ -215,3 +210,40 @@ void barrae( int posvx) {
    posvx = posvx+40;
  }
 }
+
+void serialEvent(Serial port){
+  String datos = port.readStringUntil('\n');
+  datos = trim(datos);
+  int datosInt = int(datos);
+  if(datosInt >=0 && datosInt < 2){
+    boton = datosInt;
+    //println("Boton:"+ boton);
+  } 
+  if(datosInt >= 2 && datosInt<1025){
+    fotoresis = datosInt-2;
+    //println("fotoresis: "+ fotoresis);
+  }
+  if(datosInt >= 1026 && datosInt<1028){
+    sonido = datosInt-1026;
+    //println("Sonido:"+ sonido);
+  } 
+  if(datosInt >= 1028 && datosInt<1030){
+    inclinacion = datosInt-1028;
+    //println("Inclinacion:"+ inclinacion);
+  }
+  if(datosInt >= 1030 && datosInt<2054){
+    xj = datosInt-1030;
+     println("Posicion x:"+ xj);
+     posxj += map(xj, 0, 1023, -20, 20);
+  }
+  if(datosInt >= 2054 && datosInt<3078){
+    yj = datosInt-2054;
+     println("Posicion y:"+ yj);
+     posyj += map(yj, 0, 1023, -20, 20);
+  } 
+  if(datosInt >= 3078 && datosInt<3085){
+  potenciometro = datosInt-3078;
+ // println("Potenciometro:"+ potenciometro);
+  }
+    
+  }
