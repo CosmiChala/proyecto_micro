@@ -18,12 +18,18 @@ void setup()
 void loop() {
   //enviar estado de dispositivos
   boton();
+  joystickx();
+  joysticky();
   fotoresistencia();
+  joystickx();
+  joysticky();
   sonido();
   inclinacion();
   joystickx();
   joysticky();
   potenciometro();
+   joystickx();
+  joysticky();
 }
 
 struct sensor creaSensor(byte* pin)
@@ -53,7 +59,7 @@ void boton()
     //delay(500);
     digitalWrite(dispositivos[0].pines, LOW);
   }
-  delay (1000);
+  delay (100);
 }
 
 void fotoresistencia ()
@@ -69,10 +75,10 @@ void fotoresistencia ()
   }
   else
   {
-    delay (500);
+    delay (100);
     digitalWrite(dispositivos[0].pines, LOW);
   }
-  delay(1000);
+  delay(100);
 }
 
 void sonido()
@@ -90,7 +96,7 @@ void sonido()
     //delay (500);
     digitalWrite(dispositivos[0].pines, LOW);
   }
-  delay(1000);
+  delay(100);
 }
 
 void inclinacion()
@@ -114,7 +120,7 @@ void inclinacion()
       digitalWrite(dispositivos[0].pines, LOW);
     }
   }
-  delay(500);
+  delay(100);
 }
 
 void joystickx()
@@ -153,7 +159,7 @@ void mandar(int i, int suma)
   }
   else
   {
-    if(i != 11){Serial.println((dispositivos[i].valor = analogRead(dispositivos[i].pines)) + suma);}
+    if(i != 10){Serial.println((dispositivos[i].valor = analogRead(dispositivos[i].pines)) + suma);}
     else
     {
       dispositivos[i].valor = map(analogRead(dispositivos[i].pines), 0, 1023, 1, 5);
@@ -161,5 +167,3 @@ void mandar(int i, int suma)
     }
   }
 }
-
-
