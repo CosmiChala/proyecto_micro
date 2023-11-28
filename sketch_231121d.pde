@@ -2,12 +2,11 @@
 import processing .serial.*;
 Serial port;
 PImage Bayafram, bayas, cha_practice, cha_prin, char_evolve, 
-char_muerte, char_volando, fondoBosque, fondoNoche, fondoVuelo, fondoRoca, squirtle, bayaEspecial, pelea, charDuerme, charMuerte, energiaI;
+char_muerte, char_volando, fondoBosque, fondoNoche, fondoVuelo, fondoRoca, squirtle, bayaEspecial, pelea, charDuerme, charMuerte, energiaI, instrucciones;
 int x = 200;
 int y = 500;
 int possx = 1000;
 int possy = 500;
-//int g =0;
 int bayae = 0;
 int squirtleTiempoInicio;
 int squirtleDuracion = 2000;
@@ -20,11 +19,11 @@ byte etapa = 1;
 byte energia = 0;
 //byte p=0;
 boolean mostrartexto = true;
-boolean bayaespb = true;
 int datoInt;
 int boton, fotoresis, sonido, inclinacion, xj, yj, potenciometro;
 int posxj = 800;
 int posyj = 400;
+boolean instruc = false;
 void setup(){
   bayas = loadImage("baya_amarilla.png");
   cha_practice = loadImage("ChaPractice.png");
@@ -41,6 +40,7 @@ void setup(){
   charDuerme = loadImage("charDuerme.png");
   charMuerte = loadImage("charMuerte.png");
   energiaI = loadImage("energiaI.png");
+  instrucciones = loadImage("instrucciones.jpg");
   size(1600, 900);
   noCursor();
   printArray(Serial.list());
@@ -49,14 +49,15 @@ void setup(){
 }
 
 void draw() {
-  
+ 
   switch(etapa){
     case 1: 
       bayas();
+       if(instruc == false){
+  image(instrucciones, 200,100, 1200, 700);
+  }
       break;
    case 2: 
-     //background(fondoRoca);
-     //image(cha_practice, mouseX-100, mouseY-100, 220, 200);
      mejorar();
      break;
    case 3:
@@ -194,7 +195,7 @@ void textop(String s, int ancho, int alto, int xc, int yc){
 
 void bayaespecial(int w, int z){
   image(bayaEspecial, w, z, 80, 80);
-  if(dist(posxj-100, posyj-100, w, z) < 200 & inclinacion == 1){
+  if(dist(posxj-100, posyj-100, w, z) < 200 && inclinacion == 1){
     energia++;
     w = 2000;
     z = 2000;
@@ -233,15 +234,19 @@ void serialEvent(Serial port){
   }else if(datosInt >= 1030 && datosInt<2054){
     xj = datosInt-1030;
      println("Posicion x:"+ xj);
-     posxj += map(xj, 0, 1023, -20, 20);
+     posxj += map(xj, 502, 1023, 0, 20);
   }else if(datosInt >= 2054 && datosInt<3078){
     yj = datosInt-2054;
      println("Posicion y:"+ yj);
-     posyj += map(yj, 0, 1023, -20, 20);
+     posyj += map(yj, 509, 1023, 0, 20);
   }else if(datosInt >= 3078 && datosInt<3085){
   potenciometro = datosInt-3078;
   println("Potenciometro:"+ potenciometro);
-  }
-    
+    }
   }
   
+ void keyPressed(){
+ if(key =='i'){
+  instruc = true;
+   }
+ }
