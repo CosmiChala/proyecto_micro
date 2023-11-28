@@ -7,7 +7,7 @@ int x = 200;
 int y = 500;
 int possx = 1000;
 int possy = 500;
-int g =0;
+//int g =0;
 int bayae = 0;
 int squirtleTiempoInicio;
 int squirtleDuracion = 2000;
@@ -16,9 +16,9 @@ int d = 0;
 int posvx = 1300;
 byte i=0;
 byte j = 0;
-byte etapa = 0;
+byte etapa = 1;
 byte energia = 0;
-byte p=0;
+//byte p=0;
 boolean mostrartexto = true;
 boolean bayaespb = true;
 int datoInt;
@@ -51,31 +51,31 @@ void setup(){
 void draw() {
   
   switch(etapa){
-    case 0: 
+    case 1: 
       bayas();
       break;
-   case 1: 
+   case 2: 
      //background(fondoRoca);
      //image(cha_practice, mouseX-100, mouseY-100, 220, 200);
      mejorar();
      break;
-   case 2:
+   case 3:
      background(fondoRoca);
-     image(char_evolve, mouseX-100, mouseY-100, 400, 300);
+     image(char_evolve, posxj-100, posyj-100, 400, 300);
      descanso();
      break;
-   case 3:
+   case 4:
      volar();
      break;
-   case 4:
+   case 5:
      background(255,255,255);
      image(charMuerte, 400, 450, 800, 300);
      break;
   }
  barrae(1300);
- /*if(potenciometro == 1){
-   etapa = 1;
- }*/
+ if(potenciometro > etapa){
+  etapa = byte(potenciometro);
+ }
 }
 
 void bayas() {
@@ -96,7 +96,7 @@ image(cha_prin, posxj-100, posyj-100, 220, 200);
     i++;
     mostrartexto = false;
   }
-  if(i>= 8){
+  if(i>= 5){
     etapa++;
     mostrartexto = true;
   }
@@ -159,15 +159,15 @@ void descanso(){
     textop("Recoge la última baya especial", 200, 80, 250, 60);
     }
    }else if(bayae == 5){
-     etapa = byte(random(3,5));
+     etapa = byte(random(4,6));
      print(etapa);
   }else{
     textop("Necesito descansar para poder volar.", 200, 80, 250, 60);
   }
-    if(fotoresis <500){
+    if(fotoresis <400){
         background(fondoNoche);
         image(charDuerme, 800, 650, 300, 200);
-        if(dist(posxj-100, posyj-100, 800, 450) < 1000){
+        if(dist(posxj-100, posyj-100, 800, 450) < 2000){
           d++;
         }
         if(d ==250){
@@ -221,30 +221,24 @@ void serialEvent(Serial port){
   if(datosInt >=0 && datosInt < 2){
     boton = datosInt;
     println("Boton:"+ boton);
-  } 
-  if(datosInt >= 2 && datosInt<1025){
+  }else if(datosInt >= 2 && datosInt<1025){
     fotoresis = datosInt-2;
     println("fotoresis: "+ fotoresis);
-  }
-  if(datosInt >= 1026 && datosInt<1028){
+  }else if(datosInt >= 1026 && datosInt<1028){
     sonido = datosInt-1026;
     println("Sonido:"+ sonido);
-  } 
-  if(datosInt >= 1028 && datosInt<1030){
+  }else if(datosInt >= 1028 && datosInt<1030){
     inclinacion = datosInt-1028;
     println("Inclinacion:"+ inclinacion);
-  }
-  if(datosInt >= 1030 && datosInt<2054){
+  }else if(datosInt >= 1030 && datosInt<2054){
     xj = datosInt-1030;
      println("Posicion x:"+ xj);
      posxj += map(xj, 0, 1023, -20, 20);
-  }
-  if(datosInt >= 2054 && datosInt<3078){
+  }else if(datosInt >= 2054 && datosInt<3078){
     yj = datosInt-2054;
      println("Posicion y:"+ yj);
      posyj += map(yj, 0, 1023, -20, 20);
-  } 
-  if(datosInt >= 3078 && datosInt<3085){
+  }else if(datosInt >= 3078 && datosInt<3085){
   potenciometro = datosInt-3078;
   println("Potenciometro:"+ potenciometro);
   }
