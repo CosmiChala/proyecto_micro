@@ -119,13 +119,13 @@ void inclinacion()
 
 void joystickx()
 {
-  id = 8;
+  int id = 8;
   int suma = 1030;
   mandar(id, suma);
 }
 void joysticky()
 {
-  id = 9;
+  int id = 9;
   int suma = 2054;
   mandar(id, suma);
 }
