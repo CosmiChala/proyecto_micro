@@ -55,8 +55,8 @@ void draw() {
       bayas();
       break;
    case 1: 
-     background(fondoRoca);
-     image(cha_practice, mouseX-100, mouseY-100, 220, 200);
+     //background(fondoRoca);
+     //image(cha_practice, mouseX-100, mouseY-100, 220, 200);
      mejorar();
      break;
    case 2:
@@ -73,6 +73,9 @@ void draw() {
      break;
   }
  barrae(1300);
+ /*if(potenciometro == 1){
+   etapa = 1;
+ }*/
 }
 
 void bayas() {
@@ -86,8 +89,8 @@ void bayas() {
   if(mostrartexto){
     textop("¡Tengo hambre!\n Recoge las bayas para\n alimentarme",130,90, 180, 80);
   }
-image(cha_prin, posxj, posyj, 220, 200);
-  if(dist(posxj-100, posyj-100, x, y) < 150 & boton == 1){
+image(cha_prin, posxj-100, posyj-100, 220, 200);
+  if(dist(posxj-100, posyj-100, x, y) < 150 && boton == 1){
     x = int(random(0, 1200));
     y = int(random(70, 700));
     i++;
@@ -101,8 +104,8 @@ image(cha_prin, posxj, posyj, 220, 200);
 
 void volar(){ 
   background(fondoVuelo);
-  image(char_volando, mouseX-100, mouseY-100, 220, 200);
-  if(dist(mouseX-100, mouseY-100, 800, 450) < 1000){
+  image(char_volando, posxj-100, posyj-100, 220, 200);
+  if(dist(posxj-100, posyj-100, 800, 450) < 1000){
     v++;
   }
   if(v == 200){
@@ -123,7 +126,7 @@ void mejorar(){
   
   background(fondoRoca);
   image(squirtle, possx, possy, 170, 180);
-  image(cha_practice, mouseX-100, mouseY-100, 220, 200);
+  image(cha_practice, posxj-100, posyj-100, 220, 200);
    if(bayae ==2){
     bayaespecial(200, 500);
     }else if(bayae == 3){
@@ -132,7 +135,7 @@ void mejorar(){
   if(mostrartexto){
   textop("Necesito entrenar con squirtle\n para mejorar", 200, 100, 180, 80);
   }
-  if(dist(mouseX-100, mouseY-100, possx, possy) < 90 && sonido == 1){ 
+  if(dist(posxj-100, posyj-100, possx, possy) < 90 && sonido == 1){ 
       squirtleTiempoInicio = millis();//guardar el tiempo desde que se presiono p
       possx = int(random(0, 1400)); 
       possy = int(random(0, 500));
@@ -164,7 +167,7 @@ void descanso(){
     if(fotoresis <500){
         background(fondoNoche);
         image(charDuerme, 800, 650, 300, 200);
-        if(dist(mouseX-100, mouseY-100, 800, 450) < 1000){
+        if(dist(posxj-100, posyj-100, 800, 450) < 1000){
           d++;
         }
         if(d ==250){
@@ -181,17 +184,17 @@ void descanso(){
 
 void textop(String s, int ancho, int alto, int xc, int yc){
   fill(255,255,255);
-  ellipse(mouseX+xc, mouseY-yc, ancho, alto);
+  ellipse(posxj+xc, posyj-yc, ancho, alto);
   textSize(12);
   fill(0,0,0);
   textAlign(CENTER);
-  text(s,mouseX+xc,mouseY-yc);
+  text(s,posxj+xc,posyj-yc);
   fill(255,255,255);
 }
 
 void bayaespecial(int w, int z){
   image(bayaEspecial, w, z, 80, 80);
-  if(dist(mouseX-100, mouseY-100, w, z) < 200 & inclinacion == 1){
+  if(dist(posxj-100, posyj-100, w, z) < 200 & inclinacion == 1){
     energia++;
     w = 2000;
     z = 2000;
@@ -217,19 +220,19 @@ void serialEvent(Serial port){
   int datosInt = int(datos);
   if(datosInt >=0 && datosInt < 2){
     boton = datosInt;
-    //println("Boton:"+ boton);
+    println("Boton:"+ boton);
   } 
   if(datosInt >= 2 && datosInt<1025){
     fotoresis = datosInt-2;
-    //println("fotoresis: "+ fotoresis);
+    println("fotoresis: "+ fotoresis);
   }
   if(datosInt >= 1026 && datosInt<1028){
     sonido = datosInt-1026;
-    //println("Sonido:"+ sonido);
+    println("Sonido:"+ sonido);
   } 
   if(datosInt >= 1028 && datosInt<1030){
     inclinacion = datosInt-1028;
-    //println("Inclinacion:"+ inclinacion);
+    println("Inclinacion:"+ inclinacion);
   }
   if(datosInt >= 1030 && datosInt<2054){
     xj = datosInt-1030;
@@ -243,7 +246,8 @@ void serialEvent(Serial port){
   } 
   if(datosInt >= 3078 && datosInt<3085){
   potenciometro = datosInt-3078;
- // println("Potenciometro:"+ potenciometro);
+  println("Potenciometro:"+ potenciometro);
   }
     
   }
+  
